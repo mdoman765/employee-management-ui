@@ -1,0 +1,21 @@
+<aside class="sidebar" [class.collapsed]="collapsed">
+  <div class="sidebar-header">
+    <span class="role-badge" *ngIf="!collapsed">
+      {{ isAdmin ? '⚙ Admin Panel' : '👤 User Panel' }}
+    </span>
+    <span class="role-badge" *ngIf="collapsed">{{ isAdmin ? '⚙' : '👤' }}</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a
+      *ngFor="let item of navItems"
+      [routerLink]="item.route"
+      routerLinkActive="active"
+      class="nav-item"
+      [title]="collapsed ? item.label : ''"
+    >
+      <span class="nav-icon">{{ item.icon }}</span>
+      <span class="nav-label" *ngIf="!collapsed">{{ item.label }}</span>
+    </a>
+  </nav>
+</aside>

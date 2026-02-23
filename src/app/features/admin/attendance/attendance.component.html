@@ -1,0 +1,101 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h3>📋 Attendance</h3>
+      <p class="text-muted">Track employee attendance records</p>
+    </div>
+    <button (click)="showForm = !showForm" class="btn btn-primary">
+      {{ showForm ? '✕ Cancel' : '+ Mark Attendance' }}
+    </button>
+  </div>
+
+  <div class="alert alert-success" *ngIf="successMsg">✅ {{ successMsg }}</div>
+  <div class="alert alert-danger"  *ngIf="errorMsg">⚠️ {{ errorMsg }}</div>
+
+  <!-- Form -->
+  <div class="form-card" *ngIf="showForm">
+    <h6>Mark Attendance</h6>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Employee <span class="required">*</span></label>
+          <select formControlName="employeeId" class="form-select" [class.is-invalid]="f['employeeId'].invalid && f['employeeId'].touched">
+            <option value="">-- Select Employee --</option>
+            <option *ngFor="let e of employees" [value]="e.id">{{ e.name }}</option>
+          </select>
+          <div class="invalid-feedback" *ngIf="f['employeeId'].touched && f['employeeId'].invalid">Required.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Status <span class="required">*</span></label>
+          <select formControlName="status" class="form-select">
+            <option *ngFor="let s of statusOptions" [value]="s">{{ s }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Check-In Time <span class="required">*</span></label>
+          <input formControlName="checkInTime" type="datetime-local" class="form-control"
+            [class.is-invalid]="f['checkInTime'].invalid && f['checkInTime'].touched" />
+          <div class="invalid-feedback" *ngIf="f['checkInTime'].touched && f['checkInTime'].invalid">Required.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Check-Out Time</label>
+          <input formControlName="checkOutTime" type="datetime-local" class="form-control" />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" (click)="showForm=false" class="btn btn-outline-secondary">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="saving">
+          <span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span>
+          {{ saving ? 'Saving...' : 'Save Record' }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <div class="filter-group">
+      <label>Filter by Date</label>
+      <input type="date" [(ngModel)]="filterDate" class="form-control" />
+    </div>
+    <div class="filter-group">
+      <label>Filter by Status</label>
+      <select [(ngModel)]="filterStatus" class="form-select">
+        <option value="">All Statuses</option>
+        <option *ngFor="let s of statusOptions" [value]="s">{{ s }}</option>
+      </select>
+    </div>
+    <button (click)="filterDate=''; filterStatus=''" class="btn btn-outline-secondary">Clear</button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-box"><div class="spinner-border text-primary"></div></div>
+
+  <!-- Table -->
+  <div class="table-card" *ngIf="!loading">
+    <div class="table-info">Showing <strong>{{ filtered.length }}</strong> records</div>
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr><th>#</th><th>Employee</th><th>Check-In</th><th>Check-Out</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of filtered; let i = index">
+            <td class="text-muted">{{ i + 1 }}</td>
+            <td class="fw-semibold">{{ r.employeeName }}</td>
+            <td>{{ r.checkInTime | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{ r.checkOutTime ? (r.checkOutTime | date:'dd/MM/yyyy HH:mm') : '—' }}</td>
+            <td><span class="status-badge" [class]="getStatusClass(r.status)">{{ r.status }}</span></td>
+          </tr>
+          <tr *ngIf="filtered.length === 0">
+            <td colspan="5" class="empty-row">No records found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

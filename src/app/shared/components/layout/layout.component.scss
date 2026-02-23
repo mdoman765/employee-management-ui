@@ -1,0 +1,32 @@
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f0f2f5;
+}
+
+.content-wrapper {
+  display: flex;
+  flex: 1;
+  margin-top: 60px;
+  transition: all 0.3s ease;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 250px;
+  padding: 24px;
+  transition: margin-left 0.3s ease;
+  min-height: calc(100vh - 60px);
+}
+
+.content-wrapper.sidebar-collapsed .main-content {
+  margin-left: 70px;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 16px;
+  }
+}

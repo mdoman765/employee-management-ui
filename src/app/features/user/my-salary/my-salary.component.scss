@@ -1,0 +1,39 @@
+.page { padding: 0; }
+.page-header { margin-bottom: 24px;
+  h3 { font-size: 1.4rem; font-weight: 800; color: #1E3A5F; margin-bottom: 4px; }
+  .text-muted { font-size: 0.88rem; color: #6c757d; }
+}
+.loading-box { display: flex; justify-content: center; padding: 60px; }
+.current-salary-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 24px; max-width: 520px; }
+.salary-hero { background: linear-gradient(135deg, #27AE60, #1E8449); padding: 36px 32px; text-align: center;
+  .salary-label { font-size: 0.85rem; color: rgba(255,255,255,0.8); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .salary-amount { font-size: 2.6rem; font-weight: 900; color: white; margin-bottom: 8px; }
+  .salary-date { font-size: 0.88rem; color: rgba(255,255,255,0.75); }
+}
+.salary-breakdown { padding: 24px 32px; }
+.breakdown-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f0f2f5;
+  &:last-child { border-bottom: none; }
+  &.total { padding-top: 14px; }
+  .b-label { font-size: 0.9rem; color: #6c757d; font-weight: 500; }
+  .b-value { font-size: 0.95rem; font-weight: 600; color: #1E3A5F; &.text-success { color: #27AE60; } &.text-danger { color: #C0392B; } &.net { font-size: 1.1rem; font-weight: 800; color: #27AE60; } }
+}
+.breakdown-divider { height: 1px; background: #dee2e6; margin: 6px 0; }
+.empty-state { text-align: center; padding: 60px 20px; background: white; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  .empty-icon { font-size: 4rem; margin-bottom: 20px; }
+  h5 { font-size: 1.2rem; font-weight: 700; color: #1E3A5F; margin-bottom: 10px; }
+  p { color: #6c757d; font-size: 0.92rem; }
+}
+.table-card { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+.panel-header { padding: 18px 20px; border-bottom: 1px solid #f0f2f5; h6 { font-weight: 700; color: #1E3A5F; margin: 0; } }
+.data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem;
+  th { background: #f8f9fa; color: #6c757d; font-weight: 600; padding: 12px 16px; text-align: left; border-bottom: 2px solid #e9ecef; font-size: 0.82rem; text-transform: uppercase; }
+  td { padding: 13px 16px; border-bottom: 1px solid #f0f2f5; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  .text-success { color: #27AE60; font-weight: 600; }
+  .text-danger  { color: #C0392B; font-weight: 600; }
+  .net          { font-weight: 800; color: #1E3A5F; }
+}
+.badge-status { padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 600;
+  &.active   { background: #E8F8F0; color: #27AE60; }
+  &.inactive { background: #f0f2f5; color: #6c757d; }
+}

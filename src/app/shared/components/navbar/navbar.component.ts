@@ -1,38 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
- 
+import { LoginResponse } from '../../../core/models/login.model';
+
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  template: `
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">EMS</a>
-        <div class="navbar-nav ms-auto">
-          <span class="nav-link text-light">{{ user?.username }}</span>
-          <a class="nav-link" (click)="logout()" style="cursor:pointer">Logout</a>
-        </div>
-      </div>
-    </nav>
-  `
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss']
 })
-// export class NavbarComponent {
-//     constructor(private authService: AuthService) {}
-//   user = this.authService.getCurrentUser();
-//   //constructor(private authService: AuthService) {}
-//   logout(): void { this.authService.logout(); }
-// }
 export class NavbarComponent {
-  user: any; // or type your user properly
+  @Output() toggleSidebar = new EventEmitter<void>();
+  user: LoginResponse | null;
 
-  constructor(private authService: AuthService) {
-    this.user = this.authService.getCurrentUser();
+  constructor(private auth: AuthService, private router: Router) {
+    this.user = this.auth.getCurrentUser();
+  }
+
+  onToggle(): void {
+    this.toggleSidebar.emit();
   }
 
   logout(): void {
-    this.authService.logout();
+    this.auth.logout();
+  }
+
+  getInitials(): string {
+    return this.user?.username?.charAt(0).toUpperCase() ?? 'U';
   }
 }

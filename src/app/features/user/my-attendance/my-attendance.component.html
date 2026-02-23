@@ -1,0 +1,77 @@
+<div class="page">
+  <div class="page-header">
+    <h3>📋 My Attendance</h3>
+    <p class="text-muted">View your attendance history</p>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="errorMsg">⚠️ {{ errorMsg }}</div>
+
+  <!-- Summary Cards -->
+  <div class="summary-grid" *ngIf="!loading">
+    <div class="sum-card present">
+      <div class="sum-num">{{ getSummary().present }}</div>
+      <div class="sum-label">Present</div>
+    </div>
+    <div class="sum-card absent">
+      <div class="sum-num">{{ getSummary().absent }}</div>
+      <div class="sum-label">Absent</div>
+    </div>
+    <div class="sum-card late">
+      <div class="sum-num">{{ getSummary().late }}</div>
+      <div class="sum-label">Late</div>
+    </div>
+    <div class="sum-card leave">
+      <div class="sum-num">{{ getSummary().leave }}</div>
+      <div class="sum-label">Leave</div>
+    </div>
+    <div class="sum-card total">
+      <div class="sum-num">{{ getSummary().total }}</div>
+      <div class="sum-label">Total</div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <div class="filter-group">
+      <label>Month</label>
+      <input type="month" [(ngModel)]="filterMonth" class="form-control" />
+    </div>
+    <div class="filter-group">
+      <label>Status</label>
+      <select [(ngModel)]="filterStatus" class="form-select">
+        <option value="">All</option>
+        <option *ngFor="let s of statusOptions" [value]="s">{{ s }}</option>
+      </select>
+    </div>
+    <button (click)="filterStatus=''; filterMonth=''" class="btn btn-outline-secondary mt-auto">Clear</button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-box"><div class="spinner-border text-primary"></div></div>
+
+  <!-- Table -->
+  <div class="table-card" *ngIf="!loading">
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr><th>#</th><th>Date</th><th>Check In</th><th>Check Out</th><th>Duration</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of filtered; let i = index">
+            <td class="text-muted">{{ i + 1 }}</td>
+            <td>{{ r.checkInTime | date:'EEE, dd MMM yyyy' }}</td>
+            <td>{{ r.checkInTime | date:'HH:mm' }}</td>
+            <td>{{ r.checkOutTime ? (r.checkOutTime | date:'HH:mm') : '—' }}</td>
+            <td class="text-muted">
+              {{ r.checkOutTime ? calculateDuration(r.checkInTime, r.checkOutTime) : '—' }}
+            </td>
+            <td><span class="status-badge" [class]="getStatusClass(r.status)">{{ r.status }}</span></td>
+          </tr>
+          <tr *ngIf="filtered.length === 0">
+            <td colspan="6" class="empty-row">No attendance records found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

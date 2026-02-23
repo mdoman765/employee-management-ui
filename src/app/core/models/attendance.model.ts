@@ -4,9 +4,10 @@ export interface Attendance {
   employeeName: string;
   checkInTime: string;
   checkOutTime?: string;
-  status?: string;
+  status?: 'Present' | 'Absent' | 'Late' | 'Leave';
+  createdAt?: string;
 }
- 
+
 export interface CreateAttendance {
   employeeId: number;
   checkInTime: string;

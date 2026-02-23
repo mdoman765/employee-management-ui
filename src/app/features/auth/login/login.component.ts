@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
- 
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -12,40 +12,41 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  loginForm: FormGroup;
+  form: FormGroup;
   loading = false;
-  errorMessage = '';
- 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
-  ) {
-    this.loginForm = this.fb.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
+  error = '';
+  showPassword = false;
+
+  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {
+    if (this.auth.isLoggedIn()) {
+      const role = this.auth.getCurrentUser()?.role;
+      this.router.navigate([role === 'Admin' ? '/admin/dashboard' : '/user/dashboard']);
+    }
+    this.form = this.fb.group({
+      username: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
- 
-  onSubmit(): void {
-    if (this.loginForm.invalid) return;
+
+  get f() { return this.form.controls; }
+
+  submit(): void {
+    if (this.form.invalid) { this.form.markAllAsTouched(); return; }
     this.loading = true;
-    this.errorMessage = '';
- 
-    this.authService.login(this.loginForm.value).subscribe({
-      next: (res) => {
+    this.error = '';
+    this.auth.login(this.form.value).subscribe({
+      next: res => {
         this.loading = false;
         if (res.success) {
-          const role = res.data.role;
-          this.router.navigate([role === 'Admin' ? '/admin/dashboard' : '/user/dashboard']);
+          this.router.navigate([res.data.role === 'Admin' ? '/admin/dashboard' : '/user/dashboard']);
+        } else {
+          this.error = res.message;
         }
       },
       error: () => {
         this.loading = false;
-        this.errorMessage = 'Invalid username or password';
+        this.error = 'Invalid username or password. Please try again.';
       }
     });
   }
- 
-  get f() { return this.loginForm.controls; }
 }

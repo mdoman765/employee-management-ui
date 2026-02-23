@@ -1,1 +1,67 @@
-/* You can add global styles to this file, and also import other style files */
+/* Import Bootstrap */
+@import 'bootstrap/scss/bootstrap';
+
+/* Global Reset */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  background: #f0f2f5;
+  color: #2D2D2D;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f0f2f5; }
+::-webkit-scrollbar-thumb { background: #c1c9d2; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #a0aab4; }
+
+/* Common Buttons */
+.btn-primary {
+  background: linear-gradient(135deg, #1E3A5F, #2E86AB) !important;
+  border: none !important;
+  border-radius: 9px !important;
+  font-weight: 600 !important;
+  padding: 9px 20px !important;
+  transition: all 0.2s !important;
+  &:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(30,58,95,0.35) !important; }
+  &:disabled { opacity: 0.65 !important; cursor: not-allowed !important; }
+}
+
+.btn-outline-secondary {
+  border-radius: 9px !important;
+  font-weight: 600 !important;
+  padding: 9px 20px !important;
+}
+
+.btn-danger {
+  border-radius: 9px !important;
+  font-weight: 600 !important;
+  padding: 9px 20px !important;
+}
+
+.btn-outline-secondary {
+  border: 1.5px solid #dee2e6 !important;
+}
+
+/* Alerts */
+.alert {
+  border-radius: 10px !important;
+  border: none !important;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.alert-success { background: #E8F8F0 !important; color: #27AE60 !important; }
+.alert-danger  { background: #FDECEA !important; color: #C0392B !important; }
+
+/* Table responsive wrapper */
+.table-responsive { overflow-x: auto; }
+
+/* Utility */
+.fw-semibold { font-weight: 600 !important; }
+.text-muted  { color: #6c757d !important; }
+.mt-auto     { margin-top: auto; }

@@ -1,9 +1,8 @@
-
 export interface LoginRequest {
   username: string;
   password: string;
 }
- 
+
 export interface LoginResponse {
   token: string;
   username: string;
@@ -11,7 +10,7 @@ export interface LoginResponse {
   role: string;
   userId: number;
 }
- 
+
 export interface ApiResponse<T> {
   success: boolean;
   message: string;

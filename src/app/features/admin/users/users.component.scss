@@ -1,0 +1,39 @@
+.page { padding: 0; }
+.page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;
+  h3 { font-size: 1.4rem; font-weight: 800; color: #1E3A5F; margin-bottom: 4px; }
+  .text-muted { font-size: 0.88rem; color: #6c757d; }
+}
+.form-card { background: white; border-radius: 14px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  h6 { font-weight: 700; color: #1E3A5F; margin-bottom: 16px; }
+}
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;
+  @media (max-width: 640px) { grid-template-columns: 1fr; }
+}
+.form-group { label { display: block; font-weight: 600; color: #1E3A5F; margin-bottom: 6px; font-size: 0.88rem; } .required { color: #dc3545; }
+  .form-control, .form-select { height: 44px; border-radius: 9px; border: 1.5px solid #dee2e6; &:focus { border-color: #2E86AB; box-shadow: 0 0 0 3px rgba(46,134,171,0.15); } &.is-invalid { border-color: #dc3545; } }
+}
+.invalid-feedback { display: block; color: #dc3545; font-size: 0.8rem; margin-top: 4px; }
+.form-actions { display: flex; gap: 12px; }
+.loading-box { display: flex; justify-content: center; padding: 60px; }
+.table-card { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+.data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem;
+  th { background: #f8f9fa; color: #6c757d; font-weight: 600; padding: 12px 16px; text-align: left; border-bottom: 2px solid #e9ecef; font-size: 0.82rem; text-transform: uppercase; }
+  td { padding: 13px 16px; border-bottom: 1px solid #f0f2f5; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafbfc; }
+}
+.user-name { display: flex; align-items: center; gap: 10px; }
+.user-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,#1E3A5F,#2E86AB); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; }
+.role-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 700;
+  &.admin { background: #FDECEA; color: #C0392B; }
+  &.user  { background: #E8F4FD; color: #2E86AB; }
+}
+.badge-status { padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 600;
+  &.active   { background: #E8F8F0; color: #27AE60; }
+  &.inactive { background: #f0f2f5; color: #6c757d; }
+}
+.btn-action { width: 32px; height: 32px; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; transition: all 0.2s;
+  &.deactivate { background: #FEF9E7; &:hover { background: #E67E22; } }
+  &.activate   { background: #E8F8F0; &:hover { background: #27AE60; } }
+}
+.empty-row { text-align: center; padding: 48px !important; color: #6c757d; }

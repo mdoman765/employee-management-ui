@@ -1,0 +1,24 @@
+.page { padding: 0; }
+.page-header { margin-bottom: 28px;
+  h3 { font-size: 1.4rem; font-weight: 800; color: #1E3A5F; margin-bottom: 4px; }
+  .text-muted { font-size: 0.88rem; color: #6c757d; }
+}
+.profile-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.08); max-width: 540px; }
+.profile-hero { background: linear-gradient(135deg, #1E3A5F, #2E86AB); padding: 48px 32px; text-align: center;
+  .avatar-big { width: 90px; height: 90px; border-radius: 50%; background: rgba(255,255,255,0.2); border: 3px solid rgba(255,255,255,0.6); color: white; font-size: 2rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+  h4 { color: white; font-size: 1.5rem; font-weight: 800; margin-bottom: 10px; }
+}
+.role-pill { display: inline-block; padding: 6px 18px; border-radius: 20px; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.5px;
+  &.admin { background: rgba(255,255,255,0.15); color: #FFE066; border: 1px solid rgba(255,255,255,0.3); }
+  &.user  { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); }
+}
+.profile-details { padding: 24px 32px; display: flex; flex-direction: column; gap: 0; }
+.detail-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #f0f2f5;
+  &:last-child { border-bottom: none; }
+  .detail-label { font-size: 0.88rem; color: #6c757d; font-weight: 600; }
+  .detail-value { font-size: 0.92rem; color: #1E3A5F; font-weight: 600; }
+}
+.status-dot { display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 600; padding: 4px 12px; border-radius: 20px;
+  &.active { background: #E8F8F0; color: #27AE60; }
+  &::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+}

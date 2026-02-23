@@ -1,0 +1,76 @@
+<div class="page">
+  <div class="page-header">
+    <h3>💰 My Salary</h3>
+    <p class="text-muted">View your salary details and history</p>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="errorMsg">⚠️ {{ errorMsg }}</div>
+
+  <div *ngIf="loading" class="loading-box"><div class="spinner-border text-primary"></div></div>
+
+  <ng-container *ngIf="!loading">
+    <!-- Current Salary Card -->
+    <div class="current-salary-card" *ngIf="currentSalary">
+      <div class="salary-hero">
+        <div class="salary-label">Current Monthly Salary</div>
+        <div class="salary-amount">OMR {{ netSalary(currentSalary) | number:'1.3-3' }}</div>
+        <div class="salary-date">Effective from {{ currentSalary.effectiveFrom | date:'MMMM yyyy' }}</div>
+      </div>
+
+      <div class="salary-breakdown">
+        <div class="breakdown-item">
+          <span class="b-label">Basic Salary</span>
+          <span class="b-value">OMR {{ currentSalary.basicSalary | number:'1.3-3' }}</span>
+        </div>
+        <div class="breakdown-item bonus">
+          <span class="b-label">+ Bonus</span>
+          <span class="b-value text-success">OMR {{ currentSalary.bonus | number:'1.3-3' }}</span>
+        </div>
+        <div class="breakdown-item deduction">
+          <span class="b-label">- Deduction</span>
+          <span class="b-value text-danger">OMR {{ currentSalary.deduction | number:'1.3-3' }}</span>
+        </div>
+        <div class="breakdown-divider"></div>
+        <div class="breakdown-item total">
+          <span class="b-label">Net Salary</span>
+          <span class="b-value net">OMR {{ netSalary(currentSalary) | number:'1.3-3' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- No salary message -->
+    <div class="empty-state" *ngIf="!currentSalary">
+      <div class="empty-icon">💰</div>
+      <h5>No Salary Data</h5>
+      <p>Your salary information has not been set up yet. Please contact your HR department.</p>
+    </div>
+
+    <!-- History Table -->
+    <div class="table-card" *ngIf="salaries.length > 1">
+      <div class="panel-header">
+        <h6>Salary History</h6>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr><th>Effective From</th><th>Basic</th><th>Bonus</th><th>Deduction</th><th>Net</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let s of salaries">
+              <td>{{ s.effectiveFrom | date:'dd/MM/yyyy' }}</td>
+              <td>{{ s.basicSalary | number:'1.3-3' }}</td>
+              <td class="text-success">{{ s.bonus | number:'1.3-3' }}</td>
+              <td class="text-danger">{{ s.deduction | number:'1.3-3' }}</td>
+              <td class="net">{{ netSalary(s) | number:'1.3-3' }}</td>
+              <td>
+                <span class="badge-status" [class.active]="s.isCurrent" [class.inactive]="!s.isCurrent">
+                  {{ s.isCurrent ? 'Current' : 'Historical' }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ng-container>
+</div>

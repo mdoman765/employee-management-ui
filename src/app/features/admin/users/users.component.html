@@ -1,0 +1,107 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h3>🔑 System Users</h3>
+      <p class="text-muted">Manage user accounts and roles</p>
+    </div>
+    <button (click)="showForm = !showForm" class="btn btn-primary">
+      {{ showForm ? '✕ Cancel' : '+ Add User' }}
+    </button>
+  </div>
+
+  <div class="alert alert-success" *ngIf="successMsg">✅ {{ successMsg }}</div>
+  <div class="alert alert-danger"  *ngIf="errorMsg">⚠️ {{ errorMsg }}</div>
+
+  <!-- Form -->
+  <div class="form-card" *ngIf="showForm">
+    <h6>Create New User</h6>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Username <span class="required">*</span></label>
+          <input formControlName="username" type="text" class="form-control"
+            [class.is-invalid]="f['username'].invalid && f['username'].touched" placeholder="Enter username" />
+          <div class="invalid-feedback" *ngIf="f['username'].touched && f['username'].invalid">Min 3 characters required.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Email <span class="required">*</span></label>
+          <input formControlName="email" type="email" class="form-control"
+            [class.is-invalid]="f['email'].invalid && f['email'].touched" placeholder="user@company.com" />
+          <div class="invalid-feedback" *ngIf="f['email'].touched && f['email'].invalid">Valid email required.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Password <span class="required">*</span></label>
+          <input formControlName="password" type="password" class="form-control"
+            [class.is-invalid]="f['password'].invalid && f['password'].touched" placeholder="Min 6 characters" />
+          <div class="invalid-feedback" *ngIf="f['password'].touched && f['password'].invalid">Min 6 characters required.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Role <span class="required">*</span></label>
+          <select formControlName="roleId" class="form-select" [class.is-invalid]="f['roleId'].invalid && f['roleId'].touched">
+            <option value="">-- Select Role --</option>
+            <option *ngFor="let r of roles" [value]="r.id">{{ r.name }}</option>
+          </select>
+          <div class="invalid-feedback" *ngIf="f['roleId'].touched && f['roleId'].invalid">Role is required.</div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" (click)="showForm=false" class="btn btn-outline-secondary">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="saving">
+          <span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span>
+          {{ saving ? 'Creating...' : 'Create User' }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-box"><div class="spinner-border text-primary"></div></div>
+
+  <!-- Table -->
+  <div class="table-card" *ngIf="!loading">
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr><th>#</th><th>Username</th><th>Email</th><th>Role</th><th>Last Login</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of users; let i = index">
+            <td class="text-muted">{{ i + 1 }}</td>
+            <td>
+              <div class="user-name">
+                <div class="user-avatar">{{ u.username.charAt(0).toUpperCase() }}</div>
+                <span class="fw-semibold">{{ u.username }}</span>
+              </div>
+            </td>
+            <td>{{ u.email }}</td>
+            <td>
+              <span class="role-badge" [class.admin]="u.roleName === 'Admin'" [class.user]="u.roleName === 'User'">
+                {{ u.roleName ?? 'User' }}
+              </span>
+            </td>
+            <td class="text-muted">{{ u.lastLoginDate ? (u.lastLoginDate | date:'dd/MM/yyyy HH:mm') : 'Never' }}</td>
+            <td>
+              <span class="badge-status" [class.active]="u.isActive" [class.inactive]="!u.isActive">
+                {{ u.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td>
+              <button (click)="toggleStatus(u.id, u.isActive)" class="btn-action"
+                [class.deactivate]="u.isActive" [class.activate]="!u.isActive"
+                [title]="u.isActive ? 'Deactivate' : 'Activate'">
+                {{ u.isActive ? '🚫' : '✅' }}
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="users.length === 0">
+            <td colspan="7" class="empty-row">No users found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

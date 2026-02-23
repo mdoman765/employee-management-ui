@@ -1,4 +1,3 @@
-
 export interface Salary {
   id: number;
   employeeId: number;
@@ -10,8 +9,9 @@ export interface Salary {
   effectiveFrom: string;
   effectiveTo?: string;
   isCurrent: boolean;
+  createdAt?: string;
 }
- 
+
 export interface CreateSalary {
   employeeId: number;
   basicSalary: number;

@@ -1,0 +1,74 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h3>🏢 Departments</h3>
+      <p class="text-muted">Manage organization departments</p>
+    </div>
+    <button (click)="openAdd()" class="btn btn-primary">+ Add Department</button>
+  </div>
+
+  <div class="alert alert-success" *ngIf="successMsg">✅ {{ successMsg }}</div>
+  <div class="alert alert-danger"  *ngIf="errorMsg">⚠️ {{ errorMsg }}</div>
+
+  <!-- Inline Form -->
+  <div class="form-card" *ngIf="showForm">
+    <h6>{{ editId ? 'Edit Department' : 'Add New Department' }}</h6>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="inline-form">
+      <div class="form-group flex-1">
+        <label>Department Name <span class="required">*</span></label>
+        <input formControlName="name" type="text" class="form-control"
+          [class.is-invalid]="f['name'].invalid && f['name'].touched"
+          placeholder="e.g. Human Resources" />
+        <div class="invalid-feedback" *ngIf="f['name'].touched && f['name'].errors?.['required']">Name is required.</div>
+        <div class="invalid-feedback" *ngIf="f['name'].touched && f['name'].errors?.['minlength']">Minimum 2 characters.</div>
+      </div>
+      <div class="form-btns">
+        <button type="button" (click)="closeForm()" class="btn btn-outline-secondary">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="saving">
+          <span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span>
+          {{ saving ? 'Saving...' : (editId ? 'Update' : 'Add') }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-box"><div class="spinner-border text-primary"></div></div>
+
+  <!-- Grid -->
+  <div class="dept-grid" *ngIf="!loading">
+    <div class="dept-card" *ngFor="let d of departments">
+      <div class="dept-icon">🏢</div>
+      <div class="dept-info">
+        <h6>{{ d.name }}</h6>
+        <span class="badge-status" [class.active]="d.isActive" [class.inactive]="!d.isActive">
+          {{ d.isActive ? 'Active' : 'Inactive' }}
+        </span>
+      </div>
+      <div class="dept-actions">
+        <button (click)="openEdit(d)" class="btn-action edit" title="Edit">✏️</button>
+        <button (click)="confirmDelete(d.id)" class="btn-action delete" title="Delete">🗑️</button>
+      </div>
+    </div>
+    <div class="empty-card" *ngIf="departments.length === 0">
+      <div>🏢</div>
+      <p>No departments yet. Add your first department above.</p>
+    </div>
+  </div>
+
+  <!-- Delete Modal -->
+  <div class="modal-overlay" *ngIf="deleteId">
+    <div class="modal-box">
+      <div class="modal-icon">🗑️</div>
+      <h5>Delete Department?</h5>
+      <p>This will deactivate the department. Employees in this department will not be affected.</p>
+      <div class="modal-actions">
+        <button (click)="cancelDelete()" class="btn btn-secondary">Cancel</button>
+        <button (click)="doDelete()" class="btn btn-danger" [disabled]="deleting">
+          <span *ngIf="deleting" class="spinner-border spinner-border-sm me-1"></span>
+          {{ deleting ? 'Deleting...' : 'Delete' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

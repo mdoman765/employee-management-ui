@@ -1,0 +1,81 @@
+<div class="dashboard">
+  <div class="page-header">
+    <div>
+      <h2>{{ getGreeting() }}, {{ user?.username }}! 👋</h2>
+      <p class="text-muted">Welcome to your personal dashboard.</p>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card blue">
+      <div class="stat-icon">📋</div>
+      <div class="stat-info">
+        <div class="stat-number">{{ attendanceCount }}</div>
+        <div class="stat-label">Attendance Records</div>
+      </div>
+      <a routerLink="/user/my-attendance" class="stat-link">View →</a>
+    </div>
+
+    <div class="stat-card green">
+      <div class="stat-icon">💰</div>
+      <div class="stat-info">
+        <div class="stat-number">{{ currentSalary ? (currentSalary.netSalary | number:'1.3-3') : '—' }}</div>
+        <div class="stat-label">Net Salary (OMR)</div>
+      </div>
+      <a routerLink="/user/my-salary" class="stat-link">View →</a>
+    </div>
+
+    <div class="stat-card orange">
+      <div class="stat-icon">👤</div>
+      <div class="stat-info">
+        <div class="stat-number">{{ user?.role }}</div>
+        <div class="stat-label">Your Role</div>
+      </div>
+      <a routerLink="/user/profile" class="stat-link">Profile →</a>
+    </div>
+  </div>
+
+  <!-- Recent Attendance -->
+  <div class="card-panel">
+    <div class="panel-header">
+      <h5>Recent Attendance</h5>
+      <a routerLink="/user/my-attendance" class="view-all">View All</a>
+    </div>
+    <div *ngIf="loading" class="text-center py-4">
+      <div class="spinner-border text-primary spinner-border-sm"></div>
+    </div>
+    <table class="mini-table" *ngIf="!loading">
+      <thead>
+        <tr><th>Date</th><th>Check In</th><th>Check Out</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of recentAttendance">
+          <td>{{ r.checkInTime | date:'dd/MM/yyyy' }}</td>
+          <td>{{ r.checkInTime | date:'HH:mm' }}</td>
+          <td>{{ r.checkOutTime ? (r.checkOutTime | date:'HH:mm') : '—' }}</td>
+          <td><span class="status-badge" [class]="getStatusClass(r.status)">{{ r.status }}</span></td>
+        </tr>
+        <tr *ngIf="recentAttendance.length === 0">
+          <td colspan="4" class="text-center text-muted py-3">No attendance records yet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Quick Links -->
+  <div class="quick-links">
+    <a routerLink="/user/profile" class="quick-link">
+      <span class="ql-icon">👤</span>
+      <span>My Profile</span>
+    </a>
+    <a routerLink="/user/my-attendance" class="quick-link">
+      <span class="ql-icon">📋</span>
+      <span>My Attendance</span>
+    </a>
+    <a routerLink="/user/my-salary" class="quick-link">
+      <span class="ql-icon">💰</span>
+      <span>My Salary</span>
+    </a>
+  </div>
+</div>
