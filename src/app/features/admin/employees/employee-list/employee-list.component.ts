@@ -26,13 +26,33 @@ export class EmployeeListComponent implements OnInit {
 
   ngOnInit(): void { this.load(); }
 
+  // load(): void {
+  //   this.loading = true;
+  //   this.svc.getAll().subscribe({
+  //     next: r => { this.employees = r.data ?? []; this.applyFilter(); this.loading = false; },
+  //     error: () => { this.errorMsg = 'Failed to load employees.'; this.loading = false; }
+  //   });
+  // }
+
   load(): void {
-    this.loading = true;
-    this.svc.getAll().subscribe({
-      next: r => { this.employees = r.data ?? []; this.applyFilter(); this.loading = false; },
-      error: () => { this.errorMsg = 'Failed to load employees.'; this.loading = false; }
-    });
-  }
+  this.loading = true;
+  console.log('Loading started...');           // ← add this
+  
+  this.svc.getAll().subscribe({
+    next: r => {
+      console.log('Response received:', r);    // ← add this
+      this.employees = r.data ?? [];
+      this.applyFilter();
+      this.loading = false;
+      console.log('Loading stopped.');         // ← add this
+    },
+    error: (err) => {
+      console.error('Error:', err);            // ← add this
+      this.errorMsg = 'Failed to load employees.';
+      this.loading = false;
+    }
+  });
+}
 
   applyFilter(): void {
     const s = this.search.toLowerCase();
