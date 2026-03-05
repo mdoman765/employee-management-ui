@@ -30,4 +30,5 @@ export class UserService {
   delete(id: number): Observable<ApiResponse<string>> {
     return this.http.delete<ApiResponse<string>>(`${this.url}/${id}`);
   }
+  
 }
