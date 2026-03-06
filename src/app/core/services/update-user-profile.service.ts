@@ -9,7 +9,7 @@ export interface UpdateProfileDto {
   username: string;
   email: string;
   password?: string;
-  name: string;        // ✅ Employee.Name
+  fullName: string;        // ✅ Employee.Name
   phone?: string;      // ✅ Employee.Phone
 }
 

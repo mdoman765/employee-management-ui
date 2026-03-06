@@ -10,7 +10,7 @@ interface ProfileForm {
   email: string;
   password: string;
   confirmPassword: string;
-  name: string;        // ✅ new
+  fullName: string;        // ✅ new
   phone: string;       // ✅ new
 }
 
@@ -29,10 +29,12 @@ export class ProfileComponent {
   successMsg = '';
   errorMsg = '';
 
-  form: ProfileForm = { username: '', email: '', 
+  form: ProfileForm = { 
+    username: '', 
+    email: '', 
     password: '', 
     confirmPassword: '', 
-    name: '', 
+    fullName: '', 
     phone: ''
 
    };
@@ -52,7 +54,7 @@ export class ProfileComponent {
       email: this.user?.email ?? '',
       password: '',
       confirmPassword: '',
-      name: this.user?.username ?? '', 
+      fullName: this.user?.fullName ?? '', 
       phone: this.user?.phone ?? ''       // ✅ new
     
     };
@@ -110,7 +112,7 @@ export class ProfileComponent {
     const payload: UpdateProfileDto = {
       username: this.form.username.trim(),
       email: this.form.email.trim(),
-      name:     this.form.name.trim(),           // ✅ new
+      fullName:     this.form.fullName.trim(),           // ✅ new
       phone:    this.form.phone.trim() || undefined,  // ✅ new
       ...(this.form.password && { password: this.form.password })
     };

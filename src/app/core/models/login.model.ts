@@ -9,7 +9,7 @@ export interface LoginResponse {
   email: string;
   role: string;
   userId: number;
-   name?: string;    // ✅ new
+  fullName?: string;    // ✅ new
   phone?: string;   // ✅ new
 }
 
