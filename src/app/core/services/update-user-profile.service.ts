@@ -9,6 +9,8 @@ export interface UpdateProfileDto {
   username: string;
   email: string;
   password?: string;
+  name: string;        // ✅ Employee.Name
+  phone?: string;      // ✅ Employee.Phone
 }
 
 @Injectable({ providedIn: 'root' })

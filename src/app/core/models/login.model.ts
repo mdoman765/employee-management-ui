@@ -9,6 +9,8 @@ export interface LoginResponse {
   email: string;
   role: string;
   userId: number;
+   name?: string;    // ✅ new
+  phone?: string;   // ✅ new
 }
 
 export interface ApiResponse<T> {

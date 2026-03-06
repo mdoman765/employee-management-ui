@@ -10,6 +10,8 @@ interface ProfileForm {
   email: string;
   password: string;
   confirmPassword: string;
+  name: string;        // ✅ new
+  phone: string;       // ✅ new
 }
 
 @Component({
@@ -27,7 +29,13 @@ export class ProfileComponent {
   successMsg = '';
   errorMsg = '';
 
-  form: ProfileForm = { username: '', email: '', password: '', confirmPassword: '' };
+  form: ProfileForm = { username: '', email: '', 
+    password: '', 
+    confirmPassword: '', 
+    name: '', 
+    phone: ''
+
+   };
   formErrors: Partial<ProfileForm> = {};
 
   constructor(private auth: AuthService, private profileSvc: UpdateUserProfileService) {
@@ -43,7 +51,10 @@ export class ProfileComponent {
       username: this.user?.username ?? '',
       email: this.user?.email ?? '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      name: this.user?.username ?? '', 
+      phone: this.user?.phone ?? ''       // ✅ new
+    
     };
     this.formErrors = {};
     this.successMsg = '';
@@ -99,6 +110,8 @@ export class ProfileComponent {
     const payload: UpdateProfileDto = {
       username: this.form.username.trim(),
       email: this.form.email.trim(),
+      name:     this.form.name.trim(),           // ✅ new
+      phone:    this.form.phone.trim() || undefined,  // ✅ new
       ...(this.form.password && { password: this.form.password })
     };
 
