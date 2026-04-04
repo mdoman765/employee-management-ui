@@ -1,0 +1,98 @@
+<div class="page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h3>🎫 My Tickets</h3>
+      <p class="text-muted">Track the status of your support requests</p>
+    </div>
+    <a routerLink="/user/create-ticket" class="btn btn-primary">+ New Ticket</a>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="errorMsg">⚠️ {{ errorMsg }}</div>
+
+  <!-- Summary strip -->
+  <div class="summary-strip" *ngIf="!loading && tickets.length > 0">
+    <div class="sum-item" [class.active]="filterStatus === ''" (click)="filterStatus = ''">
+      <span class="sum-num">{{ tickets.length }}</span>
+      <span class="sum-lbl">All</span>
+    </div>
+    <div class="sum-divider"></div>
+    <div class="sum-item open" [class.active]="filterStatus === 'Open'" (click)="filterStatus = 'Open'">
+      <span class="sum-num">{{ countByStatus('Open') }}</span>
+      <span class="sum-lbl">Open</span>
+    </div>
+    <div class="sum-item inprog" [class.active]="filterStatus === 'InProgress'" (click)="filterStatus = 'InProgress'">
+      <span class="sum-num">{{ countByStatus('InProgress') }}</span>
+      <span class="sum-lbl">In Progress</span>
+    </div>
+    <div class="sum-item done" [class.active]="filterStatus === 'Closed'" (click)="filterStatus = 'Closed'">
+      <span class="sum-num">{{ countByStatus('Closed') }}</span>
+      <span class="sum-lbl">Closed</span>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-box"><div class="spinner-border text-primary"></div></div>
+
+  <!-- Ticket List -->
+  <div class="tickets-list" *ngIf="!loading">
+
+    <ng-container *ngIf="filtered.length > 0">
+      <div class="ticket-card" *ngFor="let t of filtered" [class.is-open]="expandedId === t.id">
+
+        <div class="ticket-header" (click)="toggle(t.id)">
+          <div class="ticket-left">
+            <div class="ticket-badges">
+              <span class="tid">#{{ t.id }}</span>
+              <span class="priority-badge" [class]="priorityClass(t.priority)">
+                <span class="dot"></span>{{ t.priority }}
+              </span>
+              <span class="status-badge" [class]="statusClass(t.status)">{{ t.status }}</span>
+            </div>
+            <h6 class="ticket-title">{{ t.title }}</h6>
+            <div class="ticket-meta">
+              <span class="meta-chip ai">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 8v4l3 3"/></svg>
+                {{ t.category ?? 'Unclassified' }}
+              </span>
+              <span class="meta-chip" *ngIf="t.assignedToName">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                {{ t.assignedToName }}
+              </span>
+              <span class="meta-chip pending" *ngIf="!t.assignedToName">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Pending assignment
+              </span>
+              <span class="meta-time">{{ t.createdAt | date:'dd MMM yyyy' }}</span>
+            </div>
+          </div>
+          <div class="ticket-chevron" [class.rotated]="expandedId === t.id">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+
+        <div class="ticket-body" *ngIf="expandedId === t.id">
+          <div class="desc-label">Description</div>
+          <p class="ticket-desc">{{ t.description }}</p>
+        </div>
+
+      </div>
+    </ng-container>
+
+    <!-- Empty state -->
+    <div class="empty-state" *ngIf="filtered.length === 0 && tickets.length > 0">
+      <div class="empty-icon">🔍</div>
+      <h5>No tickets match</h5>
+      <p>Try selecting a different status filter above</p>
+    </div>
+
+    <div class="empty-state first-time" *ngIf="tickets.length === 0">
+      <div class="empty-icon">🎫</div>
+      <h5>No tickets yet</h5>
+      <p>Submit your first ticket and our AI will automatically classify and prioritize it.</p>
+      <a routerLink="/user/create-ticket" class="btn btn-primary mt-3">+ Submit a Ticket</a>
+    </div>
+
+  </div>
+</div>

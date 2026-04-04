@@ -1,19 +1,13 @@
 <aside class="sidebar" [class.collapsed]="collapsed">
   <div class="sidebar-header">
     <span class="role-badge" *ngIf="!collapsed">
-      {{ isAdmin ? '⚙ Admin Panel' : '👤 User Panel' }}
+      {{ role === 'Admin' ? '⚙ Admin Panel' : role === 'SupportAgent' ? '🛠 Agent Panel' : '👤 User Panel' }}
     </span>
-    <span class="role-badge" *ngIf="collapsed">{{ isAdmin ? '⚙' : '👤' }}</span>
+    <span class="role-badge" *ngIf="collapsed">{{ role === 'Admin' ? '⚙' : role === 'SupportAgent' ? '🛠' : '👤' }}</span>
   </div>
-
   <nav class="sidebar-nav">
-    <a
-      *ngFor="let item of navItems"
-      [routerLink]="item.route"
-      routerLinkActive="active"
-      class="nav-item"
-      [title]="collapsed ? item.label : ''"
-    >
+    <a *ngFor="let item of navItems" [routerLink]="item.route" routerLinkActive="active"
+       class="nav-item" [title]="collapsed ? item.label : ''">
       <span class="nav-icon">{{ item.icon }}</span>
       <span class="nav-label" *ngIf="!collapsed">{{ item.label }}</span>
     </a>

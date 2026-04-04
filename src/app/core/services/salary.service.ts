@@ -8,21 +8,22 @@ import { CreateSalary, Salary } from '../models/salary.model';
 @Injectable({ providedIn: 'root' })
 export class SalaryService {
   private url = `${environment.apiUrl}/salaries`;
-
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<ApiResponse<Salary[]>> {
     return this.http.get<ApiResponse<Salary[]>>(this.url);
   }
-
-  getByEmployee(empId: number): Observable<ApiResponse<Salary[]>> {
-    return this.http.get<ApiResponse<Salary[]>>(`${this.url}/employee/${empId}`);
+  // Admin: pass actual employeeId
+  getByEmployee(employeeId: number): Observable<ApiResponse<Salary[]>> {
+    return this.http.get<ApiResponse<Salary[]>>(`${this.url}/employee/${employeeId}`);
   }
-
+  // User: resolves employee by logged-in user's email on backend
+  getMine(): Observable<ApiResponse<Salary[]>> {
+    return this.http.get<ApiResponse<Salary[]>>(`${this.url}/my`);
+  }
   create(s: CreateSalary): Observable<ApiResponse<Salary>> {
     return this.http.post<ApiResponse<Salary>>(this.url, s);
   }
-
   update(id: number, s: CreateSalary): Observable<ApiResponse<Salary>> {
     return this.http.put<ApiResponse<Salary>>(`${this.url}/${id}`, s);
   }

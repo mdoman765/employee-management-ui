@@ -2,18 +2,9 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
-
 @Component({
-  selector: 'app-layout',
-  standalone: true,
+  selector: 'app-layout', standalone: true,
   imports: [RouterOutlet, NavbarComponent, SidebarComponent],
-  templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss']
+  templateUrl: './layout.component.html', styleUrls: ['./layout.component.scss']
 })
-export class LayoutComponent {
-  sidebarCollapsed = false;
-
-  toggleSidebar(): void {
-    this.sidebarCollapsed = !this.sidebarCollapsed;
-  }
-}
+export class LayoutComponent { sidebarCollapsed = false; toggleSidebar(): void { this.sidebarCollapsed = !this.sidebarCollapsed; } }

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { finalize } from 'rxjs/operators';
 import { AttendanceService } from '../../../core/services/attendance.service';
-import { AuthService } from '../../../core/services/auth.service';
 import { Attendance } from '../../../core/models/attendance.model';
 
 @Component({
@@ -18,17 +18,18 @@ export class MyAttendanceComponent implements OnInit {
   errorMsg = '';
   filterStatus = '';
   filterMonth = '';
-
   statusOptions = ['Present', 'Absent', 'Late', 'Leave'];
 
-  constructor(private svc: AttendanceService, private auth: AuthService) {}
+  constructor(private svc: AttendanceService) {}
 
   ngOnInit(): void {
-    const uid = this.auth.getUserId();
-    this.svc.getByEmployee(uid).subscribe({
-      next: r => { this.records = r.data ?? []; this.loading = false; },
-      error: () => { this.errorMsg = 'Failed to load attendance.'; this.loading = false; }
-    });
+    // Use /attendance/my — backend resolves employee by logged-in user's email
+    this.svc.getMine()
+      .pipe(finalize(() => this.loading = false))
+      .subscribe({
+        next: r => { this.records = r.data ?? []; },
+        error: () => { this.errorMsg = 'Failed to load attendance.'; }
+      });
   }
 
   get filtered(): Attendance[] {
@@ -40,9 +41,8 @@ export class MyAttendanceComponent implements OnInit {
   }
 
   getSummary() {
-    const total = this.filtered.length;
     return {
-      total,
+      total:   this.filtered.length,
       present: this.filtered.filter(r => r.status === 'Present').length,
       absent:  this.filtered.filter(r => r.status === 'Absent').length,
       late:    this.filtered.filter(r => r.status === 'Late').length,

@@ -1,0 +1,147 @@
+.page { padding: 0; }
+
+.page-header {
+  display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;
+  h3 { font-size: 1.4rem; font-weight: 800; color: #1E3A5F; margin-bottom: 4px; }
+  .text-muted { font-size: 0.88rem; color: #6c757d; }
+}
+
+// ── Stats Grid ────────────────────────────────────────────
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;
+  @media (max-width: 768px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 420px) { grid-template-columns: 1fr; }
+}
+.stat-card {
+  background: #fff; border-radius: 14px; padding: 20px 18px;
+  display: flex; align-items: center; gap: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.07); border-top: 4px solid transparent;
+  transition: transform .2s, box-shadow .2s;
+  &:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.11); }
+  &.blue  { border-top-color: #2E86AB; .stat-icon { background: #E8F4FD; } }
+  &.orange{ border-top-color: #E67E22; .stat-icon { background: #FEF9E7; } }
+  &.green { border-top-color: #27AE60; .stat-icon { background: #E8F8F0; } }
+  &.navy  { border-top-color: #1E3A5F; .stat-icon { background: #EEF1F8; } }
+}
+.stat-icon {
+  width: 46px; height: 46px; border-radius: 12px; font-size: 1.3rem;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.stat-number { font-size: 1.9rem; font-weight: 800; color: #1E3A5F; line-height: 1; }
+.stat-label  { font-size: 0.8rem; color: #6c757d; font-weight: 500; margin-top: 3px; }
+
+// ── Filter Bar ────────────────────────────────────────────
+.filter-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px; margin-bottom: 20px;
+}
+.status-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+.filter-btn {
+  padding: 7px 16px; border-radius: 20px; font-size: 0.82rem; font-weight: 600;
+  border: 1.5px solid #dee2e6; background: #fff; color: #6c757d; cursor: pointer;
+  transition: all .15s;
+  &:hover { border-color: #aaa; color: #333; }
+  &.active { background: #1E3A5F; color: #fff; border-color: #1E3A5F; }
+  &.open.active     { background: #2E86AB; border-color: #2E86AB; color: #fff; }
+  &.inprog.active   { background: #E67E22; border-color: #E67E22; color: #fff; }
+  &.closed.active   { background: #27AE60; border-color: #27AE60; color: #fff; }
+}
+.result-count { font-size: 0.82rem; color: #6c757d; font-style: italic; }
+
+// ── Loading ───────────────────────────────────────────────
+.loading-box { display: flex; justify-content: center; padding: 60px; }
+
+// ── Ticket List ───────────────────────────────────────────
+.tickets-list { display: flex; flex-direction: column; gap: 10px; }
+
+.ticket-card {
+  background: #fff; border-radius: 12px; overflow: hidden;
+  border: 1.5px solid #e8ecf0; box-shadow: 0 1px 6px rgba(0,0,0,.05);
+  transition: border-color .18s, box-shadow .18s;
+  &:hover { border-color: #c8d8e8; box-shadow: 0 4px 16px rgba(0,0,0,.09); }
+  &.is-expanded { border-color: #2E86AB; }
+}
+
+.ticket-header { padding: 16px 20px; cursor: pointer; }
+.ticket-top {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px;
+}
+.ticket-badges { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.tid { font-size: 0.72rem; font-weight: 700; color: #bbb; font-family: monospace; }
+
+.priority-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 9px; border-radius: 20px; font-size: 0.72rem; font-weight: 600;
+  .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+  &.high   { background: #FDECEA; color: #C0392B; }
+  &.medium { background: #FFF3CD; color: #856404; }
+  &.low    { background: #E8F8F0; color: #27AE60; }
+}
+.status-badge {
+  padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 600;
+  &.open       { background: #E8F4FD; color: #2E86AB; }
+  &.inprogress { background: #FFF3CD; color: #856404; }
+  &.closed     { background: #E8F8F0; color: #27AE60; }
+}
+.ticket-chevron {
+  flex-shrink: 0; width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .2s;
+  &.rotated { transform: rotate(180deg); }
+}
+.ticket-title {
+  font-size: 0.95rem; font-weight: 700; color: #1E3A5F;
+  margin: 0 0 10px; line-height: 1.4;
+}
+.ticket-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.meta-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 0.74rem; color: #6c757d; background: #f8f9fa;
+  padding: 3px 8px; border-radius: 6px;
+  svg { flex-shrink: 0; }
+  &.category { color: #2E86AB; background: #E8F4FD; }
+}
+.meta-time { font-size: 0.72rem; color: #bbb; margin-left: auto; }
+
+// Expanded body
+.ticket-body {
+  border-top: 1px solid #f0f2f5;
+  padding: 18px 20px; display: flex; flex-direction: column; gap: 20px;
+}
+.section-label {
+  font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.5px; color: #aaa; margin-bottom: 8px;
+}
+.ticket-desc { color: #555; font-size: 0.88rem; line-height: 1.7; margin: 0; }
+
+// Status buttons
+.status-btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+.status-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 18px; border-radius: 22px; font-size: 0.83rem; font-weight: 600;
+  border: 1.5px solid #dee2e6; background: #fff; color: #6c757d; cursor: pointer;
+  transition: all .16s;
+  &:hover { border-color: #aaa; color: #333; }
+  &.current { font-weight: 700; }
+  &.active-open     { background: #2E86AB; color: #fff; border-color: #2E86AB; }
+  &.active-inprog   { background: #E67E22; color: #fff; border-color: #E67E22; }
+  &.active-closed   { background: #27AE60; color: #fff; border-color: #27AE60; }
+}
+.status-btn-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  &.open       { background: #2E86AB; }
+  &.inprogress { background: #E67E22; }
+  &.closed     { background: #27AE60; }
+}
+.current-mark { font-size: 0.72rem; margin-left: 2px; }
+
+// ── Empty state ───────────────────────────────────────────
+.empty-state {
+  text-align: center; padding: 64px 20px;
+  background: #fff; border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  .empty-icon { font-size: 2.8rem; margin-bottom: 12px; }
+  h5 { font-size: 1.05rem; font-weight: 700; color: #1E3A5F; margin-bottom: 6px; }
+  p  { color: #888; font-size: 0.88rem; }
+}

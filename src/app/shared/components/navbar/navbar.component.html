@@ -3,38 +3,25 @@
     <button class="toggle-btn" (click)="onToggle()" title="Toggle Sidebar">
       <span></span><span></span><span></span>
     </button>
-    <div class="brand">
-      <span class="brand-icon">🏢</span>
-      <span class="brand-text">EMS</span>
-    </div>
+    <div class="brand"><span class="brand-icon">🏢</span><span class="brand-text">EMS</span></div>
   </div>
-
   <div class="navbar-right">
     <div class="user-info dropdown">
-      <div class="user-avatar" data-bs-toggle="dropdown" style="cursor:pointer">
-        {{ getInitials() }}
-      </div>
+      <div class="user-avatar" data-bs-toggle="dropdown" style="cursor:pointer">{{ getInitials() }}</div>
       <ul class="dropdown-menu dropdown-menu-end">
         <li>
           <div class="dropdown-header">
             <strong>{{ user?.username }}</strong>
             <small class="d-block text-muted">{{ user?.email }}</small>
-            <span class="badge mt-1" [class.bg-danger]="user?.role === 'Admin'" [class.bg-primary]="user?.role === 'User'">
-              {{ user?.role }}
-            </span>
+            <span class="badge mt-1"
+              [class.bg-danger]="user?.role === 'Admin'"
+              [class.bg-primary]="user?.role === 'User'"
+              [class.bg-success]="user?.role === 'SupportAgent'">{{ user?.role }}</span>
           </div>
         </li>
         <li><hr class="dropdown-divider"></li>
-        <li>
-          <a class="dropdown-item" [routerLink]="user?.role === 'Admin' ? '/admin/dashboard' : '/user/profile'">
-            <i class="me-2">👤</i> Profile
-          </a>
-        </li>
-        <li>
-          <a class="dropdown-item text-danger" (click)="logout()" style="cursor:pointer">
-            <i class="me-2">🚪</i> Logout
-          </a>
-        </li>
+        <li><a class="dropdown-item" [routerLink]="getProfileRoute()"><i class="me-2">👤</i> Profile</a></li>
+        <li><a class="dropdown-item text-danger" (click)="logout()" style="cursor:pointer"><i class="me-2">🚪</i> Logout</a></li>
       </ul>
     </div>
   </div>

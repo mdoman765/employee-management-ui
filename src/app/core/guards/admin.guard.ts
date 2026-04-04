@@ -1,9 +1,8 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-
 export const adminGuard: CanActivateFn = () => {
   const auth = inject(AuthService);
   if (auth.isLoggedIn() && auth.isAdmin()) return true;
-  return inject(Router).parseUrl('/user/dashboard');
+  return inject(Router).parseUrl(auth.isAgent() ? '/agent/assigned-tickets' : '/user/dashboard');
 };

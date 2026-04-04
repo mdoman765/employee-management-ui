@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { finalize } from 'rxjs/operators';
 import { SalaryService } from '../../../core/services/salary.service';
-import { AuthService } from '../../../core/services/auth.service';
 import { Salary } from '../../../core/models/salary.model';
 
 @Component({
@@ -17,18 +17,19 @@ export class MySalaryComponent implements OnInit {
   loading = true;
   errorMsg = '';
 
-  constructor(private svc: SalaryService, private auth: AuthService) {}
+  constructor(private svc: SalaryService) {}
 
   ngOnInit(): void {
-    const uid = this.auth.getUserId();
-    this.svc.getByEmployee(uid).subscribe({
-      next: r => {
-        this.salaries = r.data ?? [];
-        this.currentSalary = this.salaries.find(s => s.isCurrent) ?? this.salaries[0] ?? null;
-        this.loading = false;
-      },
-      error: () => { this.errorMsg = 'Failed to load salary data.'; this.loading = false; }
-    });
+    // Use /salaries/my — backend resolves employee by logged-in user's email
+    this.svc.getMine()
+      .pipe(finalize(() => this.loading = false))
+      .subscribe({
+        next: r => {
+          this.salaries      = r.data ?? [];
+          this.currentSalary = this.salaries.find(s => s.isCurrent) ?? this.salaries[0] ?? null;
+        },
+        error: () => { this.errorMsg = 'Failed to load salary data.'; }
+      });
   }
 
   netSalary(s: Salary): number {

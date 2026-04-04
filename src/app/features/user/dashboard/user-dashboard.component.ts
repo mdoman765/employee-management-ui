@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 import { AuthService } from '../../../core/services/auth.service';
 import { AttendanceService } from '../../../core/services/attendance.service';
 import { SalaryService } from '../../../core/services/salary.service';
@@ -13,7 +14,7 @@ import { SalaryService } from '../../../core/services/salary.service';
   styleUrls: ['./user-dashboard.component.scss']
 })
 export class UserDashboardComponent implements OnInit {
-  user: any; // declared without initialization
+  user: any;
   attendanceCount = 0;
   currentSalary: any = null;
   recentAttendance: any[] = [];
@@ -26,26 +27,32 @@ export class UserDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Initialize user safely after constructor
     this.user = this.auth.getCurrentUser();
+    this.loadData();
+  }
 
-    const uid = this.auth.getUserId();
+  loadData(): void {
+    this.loading = true;
 
-    this.attSvc.getByEmployee(uid).subscribe({
-      next: r => {
-        const data = r.data ?? [];
-        this.attendanceCount = data.length;
-        this.recentAttendance = data.slice(0, 5);
-        this.loading = false;
-      },
-      error: () => this.loading = false
-    });
+    // Use /attendance/my — backend resolves employee by email
+    this.attSvc.getMine()
+      .pipe(finalize(() => this.loading = false))
+      .subscribe({
+        next: r => {
+          const data = r.data ?? [];
+          this.attendanceCount  = data.length;
+          this.recentAttendance = data.slice(0, 5);
+        },
+        error: () => {}
+      });
 
-    this.salSvc.getByEmployee(uid).subscribe({
+    // Use /salaries/my — backend resolves employee by email
+    this.salSvc.getMine().subscribe({
       next: r => {
         const salaries = r.data ?? [];
         this.currentSalary = salaries.find(s => s.isCurrent) ?? salaries[0] ?? null;
-      }
+      },
+      error: () => {}
     });
   }
 

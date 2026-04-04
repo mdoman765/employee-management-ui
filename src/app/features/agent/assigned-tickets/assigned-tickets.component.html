@@ -1,0 +1,132 @@
+<div class="page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h3>🛠️ My Assigned Tickets</h3>
+      <p class="text-muted">Handle and resolve tickets assigned to you</p>
+    </div>
+  </div>
+
+  <div class="alert alert-success" *ngIf="successMsg">✅ {{ successMsg }}</div>
+  <div class="alert alert-danger"  *ngIf="errorMsg">⚠️ {{ errorMsg }}</div>
+
+  <!-- Stats Grid -->
+  <div class="stats-grid" *ngIf="!loading">
+    <div class="stat-card blue">
+      <div class="stat-icon">📭</div>
+      <div class="stat-info">
+        <div class="stat-number">{{ stats.open }}</div>
+        <div class="stat-label">Open</div>
+      </div>
+    </div>
+    <div class="stat-card orange">
+      <div class="stat-icon">⚙️</div>
+      <div class="stat-info">
+        <div class="stat-number">{{ stats.inProgress }}</div>
+        <div class="stat-label">In Progress</div>
+      </div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-icon">✅</div>
+      <div class="stat-info">
+        <div class="stat-number">{{ stats.closed }}</div>
+        <div class="stat-label">Closed</div>
+      </div>
+    </div>
+    <div class="stat-card navy">
+      <div class="stat-icon">🎫</div>
+      <div class="stat-info">
+        <div class="stat-number">{{ stats.total }}</div>
+        <div class="stat-label">Total Assigned</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter -->
+  <div class="filter-bar">
+    <div class="status-filters">
+      <button class="filter-btn" [class.active]="filterStatus === ''"
+        (click)="filterStatus = ''">All</button>
+      <button class="filter-btn open" [class.active]="filterStatus === 'Open'"
+        (click)="filterStatus = 'Open'">Open</button>
+      <button class="filter-btn inprog" [class.active]="filterStatus === 'InProgress'"
+        (click)="filterStatus = 'InProgress'">In Progress</button>
+      <button class="filter-btn closed" [class.active]="filterStatus === 'Closed'"
+        (click)="filterStatus = 'Closed'">Closed</button>
+    </div>
+    <span class="result-count" *ngIf="!loading">{{ filtered.length }} ticket{{ filtered.length !== 1 ? 's' : '' }}</span>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-box"><div class="spinner-border text-primary"></div></div>
+
+  <!-- Ticket Cards -->
+  <div class="tickets-list" *ngIf="!loading">
+
+    <div class="ticket-card" *ngFor="let t of filtered" [class.is-expanded]="expandedId === t.id">
+
+      <!-- Card header — click to expand -->
+      <div class="ticket-header" (click)="toggle(t.id)">
+        <div class="ticket-top">
+          <div class="ticket-badges">
+            <span class="tid">#{{ t.id }}</span>
+            <span class="priority-badge" [class]="priorityClass(t.priority)">
+              <span class="dot"></span>{{ t.priority }}
+            </span>
+            <span class="status-badge" [class]="statusClass(t.status)">{{ t.status }}</span>
+          </div>
+          <div class="ticket-chevron" [class.rotated]="expandedId === t.id">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <h6 class="ticket-title">{{ t.title }}</h6>
+        <div class="ticket-meta">
+          <span class="meta-chip category">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            {{ t.category ?? 'Unclassified' }}
+          </span>
+          <span class="meta-chip">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            {{ t.createdByName }}
+          </span>
+          <span class="meta-time">{{ t.createdAt | date:'dd MMM yyyy' }}</span>
+        </div>
+      </div>
+
+      <!-- Expanded body -->
+      <div class="ticket-body" *ngIf="expandedId === t.id">
+        <div class="desc-section">
+          <div class="section-label">Description</div>
+          <p class="ticket-desc">{{ t.description }}</p>
+        </div>
+
+        <div class="status-section">
+          <div class="section-label">Update Status</div>
+          <div class="status-btn-group">
+            <button *ngFor="let s of statuses"
+              class="status-btn"
+              [class.active-open]="s === 'Open' && t.status === s"
+              [class.active-inprog]="s === 'InProgress' && t.status === s"
+              [class.active-closed]="s === 'Closed' && t.status === s"
+              [class.current]="t.status === s"
+              (click)="changeStatus(t.id, s)">
+              <span class="status-btn-dot" [class]="statusClass(s)"></span>
+              {{ s }}
+              <span *ngIf="t.status === s" class="current-mark">✓</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Empty state -->
+    <div class="empty-state" *ngIf="filtered.length === 0">
+      <div class="empty-icon">🎫</div>
+      <h5>{{ filterStatus ? 'No ' + filterStatus + ' tickets' : 'No tickets assigned yet' }}</h5>
+      <p>{{ filterStatus ? 'Try a different status filter above' : 'Your admin will assign tickets to you shortly' }}</p>
+    </div>
+
+  </div>
+</div>

@@ -5,25 +5,12 @@ import { environment } from '../../../environments/environment';
 import { ApiResponse } from '../models/login.model';
 import { User } from '../models/user.model';
 
-export interface UpdateProfileDto {
-  username: string;
-  email: string;
-  password?: string;
-  fullName: string;        // ✅ Employee.Name
-  phone?: string;      // ✅ Employee.Phone
-}
+export interface UpdateProfileDto { username: string; email: string; password?: string; name: string; phone?: string; }
 
 @Injectable({ providedIn: 'root' })
 export class UpdateUserProfileService {
   private profileUrl = `${environment.apiUrl}/profile`;
-
   constructor(private http: HttpClient) {}
-
-  updateProfile(dto: UpdateProfileDto): Observable<ApiResponse<User>> {
-    return this.http.put<ApiResponse<User>>(this.profileUrl, dto);
-  }
-
-  getProfile(): Observable<ApiResponse<User>> {
-    return this.http.get<ApiResponse<User>>(this.profileUrl);
-  }
+  updateProfile(dto: UpdateProfileDto): Observable<ApiResponse<User>> { return this.http.put<ApiResponse<User>>(this.profileUrl, dto); }
+  getProfile(): Observable<ApiResponse<User>> { return this.http.get<ApiResponse<User>>(this.profileUrl); }
 }

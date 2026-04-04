@@ -108,11 +108,10 @@ export class ProfileComponent {
     this.saving = true;
     this.errorMsg = '';
     this.successMsg = '';
-
     const payload: UpdateProfileDto = {
       username: this.form.username.trim(),
       email: this.form.email.trim(),
-      fullName:     this.form.fullName.trim(),           // ✅ new
+      name:     this.form.fullName.trim(),           // ✅ new
       phone:    this.form.phone.trim() || undefined,  // ✅ new
       ...(this.form.password && { password: this.form.password })
     };

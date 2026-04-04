@@ -1,0 +1,108 @@
+.page { padding: 0; }
+
+.page-header {
+  display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;
+  h3 { font-size: 1.4rem; font-weight: 800; color: #1E3A5F; margin-bottom: 4px; }
+  .text-muted { font-size: 0.88rem; color: #6c757d; }
+}
+
+// ── Summary strip ─────────────────────────────────────────
+.summary-strip {
+  background: #fff; border-radius: 12px; padding: 16px 20px;
+  display: flex; align-items: center; gap: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06); margin-bottom: 20px;
+  flex-wrap: wrap; gap: 4px;
+}
+.sum-divider { width: 1px; height: 28px; background: #e9ecef; margin: 0 4px; }
+.sum-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 16px; border-radius: 8px; cursor: pointer;
+  transition: background .15s;
+  &:hover { background: #f8f9fa; }
+  &.active {
+    background: #E8F4FD;
+    .sum-num { color: #2E86AB; }
+    .sum-lbl { color: #2E86AB; }
+    &.open     { background: #E8F4FD; .sum-num, .sum-lbl { color: #2E86AB; } }
+    &.inprog   { background: #FFF3CD; .sum-num, .sum-lbl { color: #856404; } }
+    &.done     { background: #E8F8F0; .sum-num, .sum-lbl { color: #27AE60; } }
+  }
+}
+.sum-num { font-size: 1.3rem; font-weight: 800; color: #1E3A5F; line-height: 1; }
+.sum-lbl { font-size: 0.78rem; color: #6c757d; font-weight: 500; }
+
+// ── Loading ───────────────────────────────────────────────
+.loading-box { display: flex; justify-content: center; padding: 60px; }
+
+// ── Ticket List ───────────────────────────────────────────
+.tickets-list { display: flex; flex-direction: column; gap: 10px; }
+
+.ticket-card {
+  background: #fff; border-radius: 12px; overflow: hidden;
+  border: 1.5px solid #e8ecf0;
+  box-shadow: 0 1px 6px rgba(0,0,0,.05);
+  transition: border-color .18s, box-shadow .18s;
+  &:hover { border-color: #c8d8e8; box-shadow: 0 4px 14px rgba(0,0,0,.09); }
+  &.is-open { border-color: #2E86AB; }
+}
+
+.ticket-header {
+  padding: 16px 20px; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+}
+.ticket-left { flex: 1; min-width: 0; }
+
+.ticket-badges { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+.tid { font-size: 0.72rem; font-weight: 700; color: #bbb; font-family: monospace; }
+
+.priority-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 9px; border-radius: 20px; font-size: 0.72rem; font-weight: 600;
+  .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+  &.high   { background: #FDECEA; color: #C0392B; }
+  &.medium { background: #FFF3CD; color: #856404; }
+  &.low    { background: #E8F8F0; color: #27AE60; }
+}
+.status-badge {
+  padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 600;
+  &.open       { background: #E8F4FD; color: #2E86AB; }
+  &.inprogress { background: #FFF3CD; color: #856404; }
+  &.closed     { background: #E8F8F0; color: #27AE60; }
+}
+.ticket-title {
+  font-size: 0.95rem; font-weight: 700; color: #1E3A5F;
+  margin: 0 0 10px; line-height: 1.4; overflow-wrap: break-word;
+}
+.ticket-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.meta-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 0.74rem; color: #6c757d; background: #f8f9fa;
+  padding: 3px 8px; border-radius: 6px;
+  svg { flex-shrink: 0; }
+  &.ai      { color: #534AB7; background: #EEEDFE; }
+  &.pending { color: #856404; background: #FFF3CD; }
+}
+.meta-time { font-size: 0.72rem; color: #bbb; margin-left: auto; }
+.ticket-chevron {
+  flex-shrink: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
+  transition: transform .2s;
+  &.rotated { transform: rotate(180deg); }
+}
+
+// Expanded body
+.ticket-body {
+  padding: 0 20px 18px; border-top: 1px solid #f0f2f5; padding-top: 14px;
+}
+.desc-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #aaa; margin-bottom: 6px; }
+.ticket-desc { color: #555; font-size: 0.88rem; line-height: 1.7; margin: 0; }
+
+// ── Empty states ──────────────────────────────────────────
+.empty-state {
+  text-align: center; padding: 60px 20px;
+  background: #fff; border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  .empty-icon { font-size: 2.8rem; margin-bottom: 12px; }
+  h5 { font-size: 1.05rem; font-weight: 700; color: #1E3A5F; margin-bottom: 6px; }
+  p  { color: #888; font-size: 0.88rem; max-width: 300px; margin: 0 auto; }
+  &.first-time { border: 2px dashed #d0dff0; box-shadow: none; }
+}
